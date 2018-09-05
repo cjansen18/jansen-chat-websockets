@@ -1,0 +1,39 @@
+<div id="main-content" class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form>
+        <div class="form-group">
+          <label for="name">What is your name?</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Your name here..." [(ngModel)]="username">
+        </div>
+        <div class="form-group">
+          <label for="connect">WebSocket connection:</label>
+          <button id="connect" class="btn btn-default" type="button" [disabled]="subscribed" (click)="connect()">Connect</button>
+          <button id="disconnect" class="btn btn-default" type="button" [disabled]="!subscribed" (click)="disconnect()">Disconnect</button>
+        </div>
+        <div class="form-group">
+          <label for="messageInput">Message input:</label>
+          <input type="text" class="form-control" id="messageInput" [(ngModel)]="messageInput" name="messageInput">
+        </div>
+        <div class="form-group">
+          <button id="sendMessage" class="btn btn-default" type="button" [disabled]="!subscribed" (click)="sendMessage($event)">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" *ngIf="showConversation">
+      <h2>Messages</h2>
+      <p>{{count}} total</p>
+
+      <h3 *ngIf="count">Latest:</h3>
+      <pre>{{messages | async}}</pre>
+
+      <h3 *ngIf="mq.length">History:</h3>
+      <ol>
+        <li *ngFor="let m of mq">{{m}}</li>
+      </ol>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,21 @@
+Development ideas:
+------------------
+* Added HAL response parsing: https://www.npmjs.com/package/angular4-hal
+* Java domain object-> Typescript: https://github.com/vojtechhabarta/typescript-generator
+
+npm commands
+--------------
+ng new my-app
+
+routing setup
+-------------
+ng generate module app-routing --flat --module=app
+
+This fixes the websockets:
+---------------------------
+https://github.com/jmesnil/stomp-websocket/issues/119
+  I have the same issue,but i solved it by "npm i net -S"
+x https://github.com/benjaminws/stomp-js/issues/41
+x https://stackoverflow.com/questions/50356408/upgrading-to-angular-6-x-gives-uncaught-referenceerror-global-is-not-defined
+
+
