@@ -14,6 +14,7 @@ import org.springframework.messaging.simp.broker.SubscriptionRegistry;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
 import java.util.concurrent.ConcurrentHashMap;
 
 //https://stackoverflow.com/questions/45357194/simple-convertandsendtouser-where-do-i-get-a-username
@@ -52,8 +53,11 @@ public class ChatController {
         int userCount=userRegistry.getUserCount();
         ConcurrentHashMap sessionAttributeMap = (ConcurrentHashMap) headerAccessor.getSessionAttributes();
         String userName= (String) sessionAttributeMap.get("username");
+        Principal localPrincipal=headerAccessor.getUser();
         String simpleSessionId= (String) headerAccessor.getSessionId();
 
+        //https://stackoverflow.com/questions/45357194/simple-convertandsendtouser-where-do-i-get-a-username
+        //convertAndSendToUser(sha.session.principal.name, '/topic/public', "DIRECT DIRECT");
         return chatMessage;
     }
 
