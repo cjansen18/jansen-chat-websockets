@@ -48,7 +48,7 @@ public class ChatController {
      */
     @MessageMapping("/chat.sendMessage") //inbound
     //@SendTo("/topic/public") //outbound
-    @SendToUser("/topic/public") //outbound
+    //@SendToUser("/topic/public") //outbound
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage, SimpMessageHeaderAccessor  headerAccessor) {
         int userCount=userRegistry.getUserCount();
         ConcurrentHashMap sessionAttributeMap = (ConcurrentHashMap) headerAccessor.getSessionAttributes();
@@ -56,8 +56,11 @@ public class ChatController {
         Principal localPrincipal=headerAccessor.getUser();
         String simpleSessionId= (String) headerAccessor.getSessionId();
 
+
+        sessionAttributeMap.put("username", "Sophie");
         //https://stackoverflow.com/questions/45357194/simple-convertandsendtouser-where-do-i-get-a-username
-        //convertAndSendToUser(sha.session.principal.name, '/topic/public', "DIRECT DIRECT");
+        messagingTemplate.convertAndSendToUser("Sophie", "/topic/public", "DIRECT DIRECT");
+        messagingTemplate.convertAndSendToUser("SophieHardcoded", "/user/topic/public", "DIRECT DIRECT");
         return chatMessage;
     }
 

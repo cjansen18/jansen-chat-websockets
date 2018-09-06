@@ -4,6 +4,7 @@ import {Message} from "@stomp/stompjs";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import * as SockJS from 'sockjs-client';
+import * as Stomp from '@stomp/stompjs';
 
 @Component({
   selector: 'app-chat-new',
@@ -34,6 +35,8 @@ export class ChatNewComponent implements OnInit, OnDestroy {
   disabled: boolean;
   messageInput:String;
 
+  localClient:Stomp.Client;
+
   constructor(private _stompService: StompService) { }
 
   ngOnInit() {
@@ -44,6 +47,8 @@ export class ChatNewComponent implements OnInit, OnDestroy {
 
     //new - modified to permit button
    // this.connect();
+
+    //this.localClient.connect()
   }
 
   //new -   public subscribe() {

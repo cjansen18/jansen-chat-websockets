@@ -1,9 +1,11 @@
 package com.chrisjansen.websockets.config;
 
+import com.chrisjansen.websockets.webSocket.UserPrincipalInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.WebSocketHandler;
@@ -26,35 +28,41 @@ import java.util.UUID;
 @CrossOrigin//allow inbound requests from the Angular client!
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+  @Override
+  public void configureClientInboundChannel(ChannelRegistration registration) {
+      registration.interceptors(new UserPrincipalInterceptor());
+  }
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry.addEndpoint("/chat").setAllowedOrigins("*")
-                  .setHandshakeHandler(new DefaultHandshakeHandler() {
-
-            public boolean beforeHandshake(
-                    ServerHttpRequest request,
-                    ServerHttpResponse response,
-                    WebSocketHandler wsHandler,
-                    Map attributes) throws Exception {
-
-                if (request instanceof ServletServerHttpRequest) {
-                    ServletServerHttpRequest servletRequest
-                            = (ServletServerHttpRequest) request;
-                    HttpSession session = servletRequest
-                            .getServletRequest().getSession();
-                    attributes.put("sessionId", session.getId());
-                }
-                return true;
-            }
-                      @Override
-                      protected Principal determineUser(ServerHttpRequest request,
-                                                        WebSocketHandler wsHandler,
-                                                        Map<String, Object> attributes) {
-                          // Generate principal with UUID as name
-                          return new StompPrincipal(UUID.randomUUID().toString());
-                      }
-                  })
-                .withSockJS(); //used by the client apps to initially connect.  SockJS is used to enable a fallback for browsers without websocket support!
+//                  .setHandshakeHandler(new DefaultHandshakeHandler() {
+//
+//            public boolean beforeHandshake(
+//                    ServerHttpRequest request,
+//                    ServerHttpResponse response,
+//                    WebSocketHandler wsHandler,
+//                    Map attributes) throws Exception {
+//
+//                if (request instanceof ServletServerHttpRequest) {
+//                    ServletServerHttpRequest servletRequest
+//                            = (ServletServerHttpRequest) request;
+//                    HttpSession session = servletRequest
+//                            .getServletRequest().getSession();
+//                    attributes.put("sessionId", session.getId());
+//                }
+//                return true;
+//            }
+//                      @Override
+//                      protected Principal determineUser(ServerHttpRequest request,
+//                                                        WebSocketHandler wsHandler,
+//                                                        Map<String, Object> attributes) {
+//                          return new StompPrincipal(UUID.randomUUID().toString());
+//                      }
+//                  }
+//                  )
+//                .withSockJS()
+        ; //used by the client apps to initially connect.  SockJS is used to enable a fallback for browsers without websocket support!
     }
 
     /**

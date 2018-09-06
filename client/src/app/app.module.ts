@@ -40,16 +40,19 @@ export function socketProvider() {
 
 const stompConfig: StompConfig = {
   // Which backend server?
+
   // This is for websockets
   // url: 'ws://localhost:8080/chat',
-  url: socketProvider,
+
+  url: 'ws://localhost:8080/chat',
 
 
   // Headers
   // Typical keys: login, passcode, host
   headers: {
-    // login: 'guest',
-    // passcode: 'guest'
+    login: 'SophieHardcoded',
+    passcode: 'guestHardcoded',
+    name:'Sophie'
   },
 
   // How often to heartbeat?
