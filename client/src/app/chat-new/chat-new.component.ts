@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {StompService} from "@stomp/ng2-stompjs";
+import {StompConfig, StompService} from "@stomp/ng2-stompjs";
 import {Message} from "@stomp/stompjs";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import * as SockJS from 'sockjs-client';
 import * as Stomp from '@stomp/stompjs';
+import {socketProvider} from "../app.module";
 
 @Component({
   selector: 'app-chat-new',
@@ -52,6 +53,17 @@ export class ChatNewComponent implements OnInit, OnDestroy {
   }
 
   //new -   public subscribe() {
+
+
+  public connectNewWs(){
+    this._stompService.config=defaultConfig(this.username);
+    this._stompService.initAndConnect();
+    this.messages = this._stompService.subscribe('/user/topic/public');  //sends to this sessionId
+    this.subscription = this.messages.subscribe(this.on_next);
+  }
+
+
+
   public connect() {
    //See the app.module.ts file for url configuration
     if (this.subscribed) {
@@ -145,4 +157,30 @@ export class ChatNewComponent implements OnInit, OnDestroy {
 
     this.subscribed = false;
   }
+}
+
+
+export function defaultConfig(nameParam:String): StompConfig {
+  return {
+    // Which server?
+    url: socketProvider,
+
+    headers: {
+      login: 'guest',
+      passcode: 'guest',
+      name: nameParam
+    },
+
+    // How often to heartbeat?
+    // Interval in milliseconds, set to 0 to disable
+    heartbeat_in: 0, // Typical value 0 - disabled
+    heartbeat_out: 20000, // Typical value 20000 - every 20 seconds
+    // Wait in milliseconds before attempting auto reconnect
+    // Set to 0 to disable
+    // Typical value 5000 (5 seconds)
+    reconnect_delay: 1000,
+
+    // Will log diagnostics on console
+    debug: true
+  };
 }

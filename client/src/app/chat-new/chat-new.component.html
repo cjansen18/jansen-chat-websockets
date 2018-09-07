@@ -9,6 +9,7 @@
         <div class="form-group">
           <label for="connect">WebSocket connection:</label>
           <button id="connect" class="btn btn-default" type="button" [disabled]="subscribed" (click)="connect()">Connect</button>
+          <button id="connectNewWs" class="btn btn-default" type="button" [disabled]="subscribed" (click)="connectNewWs()">Connect New WS</button>
           <button id="disconnect" class="btn btn-default" type="button" [disabled]="!subscribed" (click)="disconnect()">Disconnect</button>
         </div>
         <div class="form-group">

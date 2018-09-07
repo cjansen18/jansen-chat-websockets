@@ -44,7 +44,8 @@ const stompConfig: StompConfig = {
   // This is for websockets
   // url: 'ws://localhost:8080/chat',
 
-  url: 'ws://localhost:8080/chat',
+
+  url: socketProvider,
 
 
   // Headers
